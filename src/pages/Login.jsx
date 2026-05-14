@@ -15,14 +15,7 @@ export default function Login() {
     setLoading(true);
     setError('');
     const result = await login(email, password);
-    if (result.success) {
-      if (result.user.role === 'admin') {
-        window.location.href = 'http://localhost:8000/admin';
-      }
-      // Other roles will auto-redirect via React Router (user state change)
-    } else {
-      setError(result.message);
-    }
+    if (!result.success) setError(result.message);
     setLoading(false);
   };
 

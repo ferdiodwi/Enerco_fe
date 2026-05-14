@@ -10,6 +10,7 @@ import AIRecommendation from './pages/AIRecommendation';
 import ImpactReport from './pages/ImpactReport';
 import Partnership from './pages/Partnership';
 import ProfileSettings from './pages/ProfileSettings';
+import UserManagement from './pages/UserManagement';
 import { useAuth } from './context/AuthContext';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="impact" element={<ImpactReport />} />
         <Route path="partnerships" element={<Partnership />} />
         <Route path="profile" element={<ProfileSettings />} />
+        <Route path="users" element={<UserManagement />} />
       </Route>
 
       {/* Catch all */}

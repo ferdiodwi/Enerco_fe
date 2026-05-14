@@ -2,14 +2,18 @@ import { Outlet, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
   LayoutDashboard, Map, ShoppingBag, BrainCircuit, BarChart3,
-  Building2, Zap, Handshake, LogOut, ExternalLink, User, ChevronLeft
+  Building2, Zap, Handshake, LogOut, User, Users, Settings
 } from 'lucide-react';
 
 const navByRole = {
   admin: [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', end: true },
+    { to: '/dashboard/users', icon: Users, label: 'Kelola Pengguna' },
     { to: '/dashboard/map', icon: Map, label: 'Peta Energi' },
+    { to: '/dashboard/recommendations', icon: BrainCircuit, label: 'Rekomendasi AI' },
+    { to: '/dashboard/impact', icon: BarChart3, label: 'Laporan Dampak' },
     { to: '/dashboard/marketplace', icon: ShoppingBag, label: 'Marketplace' },
+    { to: '/dashboard/partnerships', icon: Handshake, label: 'Kemitraan' },
   ],
   government: [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', end: true },
@@ -78,18 +82,6 @@ export default function DashboardLayout() {
               {item.label}
             </NavLink>
           ))}
-
-          {(user.role === 'admin' || user.role === 'government') && (
-            <>
-              <div className="pt-4 mt-4 border-t border-slate-100">
-                <p className="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Admin</p>
-              </div>
-              <a href="http://localhost:8000/admin" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors">
-                <ExternalLink className="h-5 w-5" /> Admin Panel
-              </a>
-            </>
-          )}
         </nav>
 
         <div className="p-4 border-t border-slate-100">
