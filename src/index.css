@@ -1,16 +1,53 @@
+@import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme {
-  --color-primary: #10b981; /* emerald-500 */
-  --color-primary-dark: #059669; /* emerald-600 */
-  --color-secondary: #0ea5e9; /* sky-500 */
-  --color-dark: #0f172a; /* slate-900 */
-  --color-light: #f8fafc; /* slate-50 */
+  --color-primary: #059669;
+  --color-primary-dark: #047857;
+  --color-primary-light: #D1FAE5;
+  --color-secondary: #0284C7;
+  --color-secondary-light: #E0F2FE;
+  --color-accent: #A3E635;
+  --color-warning: #FACC15;
+  --color-dark: #0F172A;
+  --color-light: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-muted: #64748B;
+  --color-border: #E2E8F0;
+  --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--color-light);
   color: var(--color-dark);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-light);
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }

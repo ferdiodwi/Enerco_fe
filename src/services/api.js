@@ -31,10 +31,9 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      // Auto logout if 401 Unauthorized is returned
+      // Clear auth data but don't force redirect — let React Router handle it
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
