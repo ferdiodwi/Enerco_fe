@@ -1,41 +1,16 @@
-@import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme {
-  /* Dashboard tokens (keep for admin) */
-  --color-primary: #059669;
-  --color-primary-dark: #047857;
-  --color-primary-light: #D1FAE5;
-  --color-secondary: #0284C7;
-  --color-secondary-light: #E0F2FE;
-  --color-accent: #A3E635;
-  --color-warning: #FACC15;
-  --color-dark: #0F172A;
-  --color-light: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-muted: #64748B;
-  --color-border: #E2E8F0;
-  --font-heading: 'Inter', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --color-primary: #10b981; /* Emerald 500 */
+  --color-secondary: #14b8a6; /* Teal 500 */
+  --color-accent: #06b6d4; /* Cyan 500 */
+  --color-bg-dark: #0f172a; /* Slate 900 */
+  --color-bg-light: #f8fafc; /* Slate 50 */
 }
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-feature-settings: "ss01";
-  background-color: #fff;
-  color: #0d253d;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Basic body reset */
+@layer base {
+  body {
+    @apply bg-bg-light text-slate-800 antialiased;
+  }
 }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
-}
-
-html { scroll-behavior: smooth; }
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f6f9fc; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
