@@ -20,6 +20,12 @@ import GovernmentOverview from "@/pages/government/GovernmentOverview";
 import ProviderOverview from "@/pages/provider/ProviderOverview";
 import PartnerOverview from "@/pages/partner/PartnerOverview";
 
+// Admin Pages
+import UserManagement from "@/pages/admin/UserManagement";
+import BusinessList from "@/pages/admin/BusinessList";
+import EnergySourceList from "@/pages/admin/EnergySourceList";
+import RecommendationList from "@/pages/admin/RecommendationList";
+
 // Shared
 import ComingSoon from "@/pages/ComingSoon";
 import ProtectedRoute from "@/routes/ProtectedRoute";
@@ -52,11 +58,11 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/admin" element={<AdminOverview />} />
-                <Route path="/admin/users" element={<ComingSoon title="User Management" />} />
-                <Route path="/admin/businesses" element={<ComingSoon title="UMKM Management" />} />
-                <Route path="/admin/energy-sources" element={<ComingSoon title="Energy Sources" />} />
+                <Route path="/admin/users" element={<UserManagement />} />
+                <Route path="/admin/businesses" element={<BusinessList />} />
+                <Route path="/admin/energy-sources" element={<EnergySourceList />} />
                 <Route path="/admin/energy-needs" element={<ComingSoon title="Energy Needs" />} />
-                <Route path="/admin/recommendations" element={<ComingSoon title="AI Recommendations" />} />
+                <Route path="/admin/recommendations" element={<RecommendationList />} />
                 <Route path="/admin/distributions" element={<ComingSoon title="Distributions" />} />
                 <Route path="/admin/products" element={<ComingSoon title="Products" />} />
                 <Route path="/admin/partnerships" element={<ComingSoon title="Partnerships" />} />
