@@ -1,80 +1,88 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Mail, Lock, Loader2, Zap } from 'lucide-react';
+import { Zap, Mail, Lock, Loader2, ArrowLeft } from 'lucide-react';
 
 export default function Login() {
+  const { user, login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  if (user) return <Navigate to="/dashboard" replace />;
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+    e.preventDefault(); setLoading(true); setError('');
     const result = await login(email, password);
     if (!result.success) setError(result.message);
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 px-4">
-      <div className="mx-auto w-full max-w-md">
-        <Link to="/" className="flex items-center justify-center gap-2 text-2xl font-bold text-emerald-600 mb-2" style={{fontFamily:'var(--font-heading)'}}>
-          <Zap className="h-7 w-7" /> EnergEco
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-emerald-50/50 font-light">
+      <div className="w-full max-w-sm mb-6">
+        <Link to="/" className="inline-flex items-center gap-1.5 text-[15px] text-slate-500 hover:opacity-70 transition">
+          <ArrowLeft className="h-4 w-4" /> Kembali
         </Link>
-        <p className="text-center text-slate-500 text-sm mb-8">Masuk ke platform distribusi energi bersih.</p>
+      </div>
 
-        <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8">
-          {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-100 mb-6">{error}</div>}
+      <div className="w-full max-w-sm p-8 rounded-xl bg-white border border-emerald-100 shadow-xl shadow-emerald-900/5">
+        <div className="flex items-center gap-2 mb-8">
+          <Zap className="h-5 w-5 text-emerald-600" />
+          <span className="text-[17px] font-light text-slate-800 tracking-tight">EnergEco</span>
+        </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Email Address</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" placeholder="email@contoh.com" />
-              </div>
-            </div>
+        <h1 className="text-[26px] font-light text-slate-800 tracking-tight mb-1">Masuk ke akun</h1>
+        <p className="text-[15px] font-light text-slate-500 mb-6">
+          Belum punya akun? <Link to="/register" className="font-normal text-emerald-600 hover:underline">Daftar</Link>
+        </p>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-2.5 h-5 w-5 text-slate-400" />
-                <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500" placeholder="••••••••" />
-              </div>
-            </div>
+        {error && <div className="mb-4 p-3 rounded-md text-sm font-normal bg-red-50 border border-red-100 text-red-600">{error}</div>}
 
-            <button type="submit" disabled={loading}
-              className="w-full flex justify-center items-center gap-2 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-70 shadow-sm">
-              {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Masuk ke Sistem'}
-            </button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-slate-500">
-            Belum punya akun?{' '}
-            <Link to="/register" className="text-emerald-600 font-medium hover:text-emerald-700">Daftar sekarang</Link>
-          </p>
-
-          <div className="mt-6 pt-6 border-t border-slate-100">
-            <p className="text-xs text-slate-400 text-center mb-3">Akun Demo:</p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              {[
-                { label: 'Admin', email: 'admin@energeco.id' },
-                { label: 'UMKM', email: 'umkm1@energeco.id' },
-              ].map(a => (
-                <button key={a.email} type="button" onClick={() => { setEmail(a.email); setPassword('password'); }}
-                  className="bg-slate-50 hover:bg-slate-100 text-slate-600 py-2 rounded-lg border border-slate-200 transition-colors">
-                  {a.label}: {a.email}
-                </button>
-              ))}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-[13px] font-normal text-slate-500 mb-1.5">Email</label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="nama@email.com"
+                className="w-full pl-10 pr-3 py-2 text-[15px] font-light rounded-md outline-none border border-emerald-100 bg-white text-slate-800 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition" />
             </div>
           </div>
+          <div>
+            <label className="block text-[13px] font-normal text-slate-500 mb-1.5">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)} required placeholder="••••••••"
+                className="w-full pl-10 pr-3 py-2 text-[15px] font-light rounded-md outline-none border border-emerald-100 bg-white text-slate-800 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition" />
+            </div>
+          </div>
+          <button type="submit" disabled={loading}
+            className="w-full flex items-center justify-center gap-2 text-base font-normal py-2.5 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition disabled:opacity-60">
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Masuk'}
+          </button>
+        </form>
+      </div>
+
+      {/* Demo */}
+      <div className="w-full max-w-sm mt-4 p-5 rounded-xl bg-white border border-emerald-100">
+        <p className="text-[10px] font-medium uppercase mb-3 text-slate-500 tracking-wide">Akun Demo</p>
+        <div className="space-y-1.5">
+          {[
+            { r: 'Admin', e: 'admin@energeco.id' },
+            { r: 'Pemerintah', e: 'pemerintah@energeco.id' },
+            { r: 'UMKM', e: 'umkm1@energeco.id' },
+            { r: 'Penyedia Energi', e: 'solar@energeco.id' },
+            { r: 'Investor', e: 'investor@energeco.id' },
+          ].map((d, i) => (
+            <button key={i} onClick={() => { setEmail(d.e); setPassword('password'); }}
+              className="w-full flex justify-between p-2.5 rounded-md text-left transition hover:bg-emerald-50">
+              <span className="text-sm font-normal text-slate-800">{d.r}</span>
+              <span className="text-[13px] font-mono text-slate-500">{d.e}</span>
+            </button>
+          ))}
         </div>
+        <p className="text-[13px] font-normal text-slate-500 mt-3">Password: <code className="px-1.5 py-0.5 rounded text-xs bg-emerald-50 text-slate-700">password</code></p>
       </div>
     </div>
   );

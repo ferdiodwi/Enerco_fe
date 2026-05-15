@@ -1,8 +1,9 @@
 @import "leaflet/dist/leaflet.css";
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme {
+  /* Dashboard tokens (keep for admin) */
   --color-primary: #059669;
   --color-primary-dark: #047857;
   --color-primary-light: #D1FAE5;
@@ -15,39 +16,26 @@
   --color-surface: #FFFFFF;
   --color-muted: #64748B;
   --color-border: #E2E8F0;
-  --font-heading: 'Plus Jakarta Sans', sans-serif;
+  --font-heading: 'Inter', sans-serif;
   --font-body: 'Inter', sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-body);
-  background-color: var(--color-light);
-  color: var(--color-dark);
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: "ss01";
+  background-color: #fff;
+  color: #0d253d;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+  font-family: 'Inter', sans-serif;
 }
 
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-light);
-}
-::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
+html { scroll-behavior: smooth; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f6f9fc; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
