@@ -2,52 +2,15 @@ import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  LayoutDashboard, Users, Building2, Zap, BatteryCharging,
-  Map, Brain, Truck, ShoppingBag, Handshake, FileText, Settings,
-  LogOut, Menu, X, ChevronDown, Leaf
-} from "lucide-react";
+import { LayoutDashboard, Users, Building2, Zap, BatteryCharging, Map, Brain, Truck, ShoppingBag, Handshake, FileText, Settings, LogOut, Menu, X, ChevronDown, Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const menuMap: Record<string, { label: string; icon: React.ReactNode; path: string }[]> = {
-  admin: [
-    { label: "Overview", icon: <LayoutDashboard size={20} />, path: "" },
-    { label: "Users", icon: <Users size={20} />, path: "users" },
-    { label: "UMKM", icon: <Building2 size={20} />, path: "businesses" },
-    { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" },
-    { label: "Energy Needs", icon: <BatteryCharging size={20} />, path: "energy-needs" },
-    { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" },
-    { label: "Distributions", icon: <Truck size={20} />, path: "distributions" },
-    { label: "Products", icon: <ShoppingBag size={20} />, path: "products" },
-    { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" },
-    { label: "Reports", icon: <FileText size={20} />, path: "reports" },
-  ],
-  umkm: [
-    { label: "Overview", icon: <LayoutDashboard size={20} />, path: "" },
-    { label: "Business Profile", icon: <Building2 size={20} />, path: "business" },
-    { label: "Energy Needs", icon: <BatteryCharging size={20} />, path: "energy-needs" },
-    { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" },
-    { label: "Products", icon: <ShoppingBag size={20} />, path: "products" },
-    { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" },
-  ],
-  government: [
-    { label: "Overview", icon: <LayoutDashboard size={20} />, path: "" },
-    { label: "Priority Map", icon: <Map size={20} />, path: "map" },
-    { label: "Businesses", icon: <Building2 size={20} />, path: "businesses" },
-    { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" },
-    { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" },
-    { label: "Impact Reports", icon: <FileText size={20} />, path: "reports" },
-  ],
-  provider: [
-    { label: "Overview", icon: <LayoutDashboard size={20} />, path: "" },
-    { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" },
-    { label: "Distributions", icon: <Truck size={20} />, path: "distributions" },
-  ],
-  partner: [
-    { label: "Overview", icon: <LayoutDashboard size={20} />, path: "" },
-    { label: "Opportunities", icon: <Building2 size={20} />, path: "businesses" },
-    { label: "Marketplace", icon: <ShoppingBag size={20} />, path: "marketplace" },
-    { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" },
-  ],
+  admin: [{ label: "Overview", icon: <LayoutDashboard size={20} />, path: "" }, { label: "Users", icon: <Users size={20} />, path: "users" }, { label: "UMKM", icon: <Building2 size={20} />, path: "businesses" }, { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" }, { label: "Energy Needs", icon: <BatteryCharging size={20} />, path: "energy-needs" }, { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" }, { label: "Distributions", icon: <Truck size={20} />, path: "distributions" }, { label: "Products", icon: <ShoppingBag size={20} />, path: "products" }, { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" }, { label: "Reports", icon: <FileText size={20} />, path: "reports" }],
+  umkm: [{ label: "Overview", icon: <LayoutDashboard size={20} />, path: "" }, { label: "Business Profile", icon: <Building2 size={20} />, path: "business" }, { label: "Energy Needs", icon: <BatteryCharging size={20} />, path: "energy-needs" }, { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" }, { label: "Products", icon: <ShoppingBag size={20} />, path: "products" }, { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" }],
+  government: [{ label: "Overview", icon: <LayoutDashboard size={20} />, path: "" }, { label: "Priority Map", icon: <Map size={20} />, path: "map" }, { label: "Businesses", icon: <Building2 size={20} />, path: "businesses" }, { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" }, { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" }, { label: "Impact Reports", icon: <FileText size={20} />, path: "reports" }],
+  provider: [{ label: "Overview", icon: <LayoutDashboard size={20} />, path: "" }, { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" }, { label: "Distributions", icon: <Truck size={20} />, path: "distributions" }],
+  partner: [{ label: "Overview", icon: <LayoutDashboard size={20} />, path: "" }, { label: "Opportunities", icon: <Building2 size={20} />, path: "businesses" }, { label: "Marketplace", icon: <ShoppingBag size={20} />, path: "marketplace" }, { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" }],
 };
 
 export default function DashboardLayout() {
@@ -67,11 +30,8 @@ export default function DashboardLayout() {
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
-      {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-700/50">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
-          <Leaf size={22} className="text-white" />
-        </div>
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center"><Leaf size={22} className="text-white" /></div>
         {sidebarOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="overflow-hidden">
             <h1 className="text-lg font-bold text-white tracking-tight">EnergEco</h1>
@@ -80,20 +40,11 @@ export default function DashboardLayout() {
         )}
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         {menus.map((item) => (
           <NavLink
-            key={item.path}
-            to={`${basePath}/${item.path}`}
-            end={item.path === ""}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isActive
-                  ? "bg-emerald-500/15 text-emerald-400 shadow-sm shadow-emerald-500/10"
-                  : "text-slate-400 hover:text-white hover:bg-slate-700/50"
-              }`
-            }
+            key={item.path} to={`${basePath}/${item.path}`} end={item.path === ""}
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive ? "bg-emerald-500/15 text-emerald-400 shadow-sm shadow-emerald-500/10" : "text-slate-400 hover:text-white hover:bg-slate-700/50"}`}
             onClick={() => setMobileOpen(false)}
           >
             {item.icon}
@@ -102,12 +53,9 @@ export default function DashboardLayout() {
         ))}
       </nav>
 
-      {/* User Info & Logout */}
       <div className="px-3 py-4 border-t border-slate-700/50">
         <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">
-            {user?.name?.charAt(0).toUpperCase()}
-          </div>
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">{user?.name?.charAt(0).toUpperCase()}</div>
           {sidebarOpen && (
             <div className="overflow-hidden">
               <p className="text-sm font-medium text-white truncate">{user?.name}</p>
@@ -115,68 +63,42 @@ export default function DashboardLayout() {
             </div>
           )}
         </div>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm font-medium text-red-400 hover:bg-red-500/10 transition-all"
-        >
-          <LogOut size={20} />
+        <Button variant="ghost" onClick={handleLogout} className="w-full justify-start text-red-400 hover:bg-red-500/10 hover:text-red-300">
+          <LogOut size={20} className="mr-2" />
           {sidebarOpen && <span>Logout</span>}
-        </button>
+        </Button>
       </div>
     </div>
   );
 
   return (
     <div className="min-h-screen bg-slate-950 flex">
-      {/* Desktop Sidebar */}
-      <aside
-        className={`hidden lg:flex flex-col fixed inset-y-0 left-0 z-30 bg-slate-900/80 backdrop-blur-xl border-r border-slate-700/50 transition-all duration-300 ${
-          sidebarOpen ? "w-64" : "w-20"
-        }`}
-      >
+      <aside className={`hidden lg:flex flex-col fixed inset-y-0 left-0 z-30 bg-slate-900/80 backdrop-blur-xl border-r border-slate-700/50 transition-all duration-300 ${sidebarOpen ? "w-64" : "w-20"}`}>
         <SidebarContent />
       </aside>
 
-      {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
-              onClick={() => setMobileOpen(false)}
-            />
-            <motion.aside
-              initial={{ x: -280 }} animate={{ x: 0 }} exit={{ x: -280 }}
-              transition={{ type: "spring", damping: 25 }}
-              className="fixed inset-y-0 left-0 w-64 bg-slate-900 z-50 lg:hidden"
-            >
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden" onClick={() => setMobileOpen(false)} />
+            <motion.aside initial={{ x: -280 }} animate={{ x: 0 }} exit={{ x: -280 }} transition={{ type: "spring", damping: 25 }} className="fixed inset-y-0 left-0 w-64 bg-slate-900 z-50 lg:hidden">
               <SidebarContent />
             </motion.aside>
           </>
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
       <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? "lg:ml-64" : "lg:ml-20"}`}>
-        {/* Top Bar */}
         <header className="sticky top-0 z-20 bg-slate-900/60 backdrop-blur-xl border-b border-slate-700/50 px-4 lg:px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={() => setMobileOpen(true)} className="lg:hidden text-slate-400 hover:text-white">
-              <Menu size={24} />
-            </button>
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="hidden lg:block text-slate-400 hover:text-white">
-              {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+            <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)} className="lg:hidden text-slate-400 hover:text-white"><Menu size={24} /></Button>
+            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)} className="hidden lg:flex text-slate-400 hover:text-white">{sidebarOpen ? <X size={20} /> : <Menu size={20} />}</Button>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 font-medium capitalize">
-              {role}
-            </span>
+            <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 font-medium capitalize">{role}</span>
           </div>
         </header>
 
-        {/* Page Content */}
         <main className="flex-1 p-4 lg:p-8">
           <Outlet />
         </main>

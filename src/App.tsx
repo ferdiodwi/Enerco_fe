@@ -8,6 +8,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 
 // Public
 import LandingPage from "@/pages/public/LandingPage";
+import MarketplacePage from "@/pages/public/MarketplacePage";
 
 // Auth
 import LoginPage from "@/pages/auth/LoginPage";
@@ -25,6 +26,14 @@ import UserManagement from "@/pages/admin/UserManagement";
 import BusinessList from "@/pages/admin/BusinessList";
 import EnergySourceList from "@/pages/admin/EnergySourceList";
 import RecommendationList from "@/pages/admin/RecommendationList";
+
+// UMKM Pages
+import BusinessProfile from "@/pages/umkm/BusinessProfile";
+
+// Shared Pages
+import EnergyNeedsPage from "@/pages/shared/EnergyNeedsPage";
+import DistributionList from "@/pages/shared/DistributionList";
+import PartnershipList from "@/pages/shared/PartnershipList";
 
 // Shared
 import ComingSoon from "@/pages/ComingSoon";
@@ -50,6 +59,7 @@ export default function App() {
           <Routes>
             {/* Public */}
             <Route path="/" element={<LandingPage />} />
+            <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/dashboard" element={<RoleRedirect />} />
@@ -61,11 +71,11 @@ export default function App() {
                 <Route path="/admin/users" element={<UserManagement />} />
                 <Route path="/admin/businesses" element={<BusinessList />} />
                 <Route path="/admin/energy-sources" element={<EnergySourceList />} />
-                <Route path="/admin/energy-needs" element={<ComingSoon title="Energy Needs" />} />
+                <Route path="/admin/energy-needs" element={<EnergyNeedsPage />} />
                 <Route path="/admin/recommendations" element={<RecommendationList />} />
-                <Route path="/admin/distributions" element={<ComingSoon title="Distributions" />} />
+                <Route path="/admin/distributions" element={<DistributionList />} />
                 <Route path="/admin/products" element={<ComingSoon title="Products" />} />
-                <Route path="/admin/partnerships" element={<ComingSoon title="Partnerships" />} />
+                <Route path="/admin/partnerships" element={<PartnershipList />} />
                 <Route path="/admin/reports" element={<ComingSoon title="Reports" />} />
               </Route>
             </Route>
@@ -74,11 +84,11 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["umkm"]} />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/umkm" element={<UmkmOverview />} />
-                <Route path="/umkm/business" element={<ComingSoon title="Business Profile" />} />
-                <Route path="/umkm/energy-needs" element={<ComingSoon title="Energy Needs" />} />
+                <Route path="/umkm/business" element={<BusinessProfile />} />
+                <Route path="/umkm/energy-needs" element={<EnergyNeedsPage />} />
                 <Route path="/umkm/recommendations" element={<ComingSoon title="Recommendations" />} />
                 <Route path="/umkm/products" element={<ComingSoon title="Products" />} />
-                <Route path="/umkm/partnerships" element={<ComingSoon title="Partnerships" />} />
+                <Route path="/umkm/partnerships" element={<PartnershipList />} />
               </Route>
             </Route>
 
@@ -87,9 +97,9 @@ export default function App() {
               <Route element={<DashboardLayout />}>
                 <Route path="/government" element={<GovernmentOverview />} />
                 <Route path="/government/map" element={<ComingSoon title="Priority Map" />} />
-                <Route path="/government/businesses" element={<ComingSoon title="Businesses" />} />
-                <Route path="/government/energy-sources" element={<ComingSoon title="Energy Sources" />} />
-                <Route path="/government/recommendations" element={<ComingSoon title="Recommendations" />} />
+                <Route path="/government/businesses" element={<BusinessList />} />
+                <Route path="/government/energy-sources" element={<EnergySourceList />} />
+                <Route path="/government/recommendations" element={<RecommendationList />} />
                 <Route path="/government/reports" element={<ComingSoon title="Impact Reports" />} />
               </Route>
             </Route>
@@ -98,8 +108,8 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["provider"]} />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/provider" element={<ProviderOverview />} />
-                <Route path="/provider/energy-sources" element={<ComingSoon title="Energy Sources" />} />
-                <Route path="/provider/distributions" element={<ComingSoon title="Distributions" />} />
+                <Route path="/provider/energy-sources" element={<EnergySourceList />} />
+                <Route path="/provider/distributions" element={<DistributionList />} />
               </Route>
             </Route>
 
@@ -107,9 +117,9 @@ export default function App() {
             <Route element={<ProtectedRoute allowedRoles={["partner"]} />}>
               <Route element={<DashboardLayout />}>
                 <Route path="/partner" element={<PartnerOverview />} />
-                <Route path="/partner/businesses" element={<ComingSoon title="Opportunities" />} />
+                <Route path="/partner/businesses" element={<BusinessList />} />
                 <Route path="/partner/marketplace" element={<ComingSoon title="Marketplace" />} />
-                <Route path="/partner/partnerships" element={<ComingSoon title="Partnerships" />} />
+                <Route path="/partner/partnerships" element={<PartnershipList />} />
               </Route>
             </Route>
 

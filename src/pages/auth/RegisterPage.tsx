@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { Leaf, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
 
 const roles = [
   { value: "umkm", label: "UMKM", desc: "Pelaku usaha lokal" },
@@ -24,19 +28,14 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setErrors({});
-    setLoading(true);
+    setError(""); setErrors({}); setLoading(true);
     try {
       await register(form);
-      navigate(`/${form.role}`);
-      window.location.reload();
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "Registrasi gagal");
       if (err.response?.data?.errors) setErrors(err.response.data.errors);
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   return (
@@ -52,70 +51,48 @@ export default function RegisterPage() {
         <h1 className="text-3xl font-bold text-white mb-2">Buat Akun Baru</h1>
         <p className="text-slate-400 mb-8">Bergabung dalam ekosistem energi bersih</p>
 
-        {error && <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">{error}</div>}
+        {error && <Card className="mb-6 bg-red-500/10 border-red-500/20"><CardContent className="py-3 text-red-400 text-sm">{error}</CardContent></Card>}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Role Selection */}
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Pilih Role</label>
-            <div className="grid grid-cols-2 gap-3">
+            <Label>Pilih Role</Label>
+            <div className="grid grid-cols-2 gap-3 mt-2">
               {roles.map((r) => (
-                <button key={r.value} type="button" onClick={() => set("role", r.value)}
-                  className={`p-3 rounded-xl border text-left transition-all ${
-                    form.role === r.value
-                      ? "border-emerald-500 bg-emerald-500/10 text-emerald-400"
-                      : "border-slate-700 bg-slate-900 text-slate-400 hover:border-slate-500"
-                  }`}>
-                  <p className="text-sm font-medium">{r.label}</p>
-                  <p className="text-xs opacity-70 mt-0.5">{r.desc}</p>
-                </button>
+                <Button key={r.value} type="button" variant={form.role === r.value ? "default" : "outline"} onClick={() => set("role", r.value)}
+                  className={`h-auto p-3 justify-start flex-col items-start ${form.role === r.value ? "bg-emerald-500/15 border-emerald-500 text-emerald-400 hover:bg-emerald-500/20" : "bg-slate-900 border-slate-700 text-slate-400 hover:text-white"}`}>
+                  <span className="text-sm font-medium">{r.label}</span>
+                  <span className="text-xs opacity-70 mt-0.5">{r.desc}</span>
+                </Button>
               ))}
             </div>
             {errors.role && <p className="text-red-400 text-xs mt-1">{errors.role[0]}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Nama Lengkap</label>
-              <input value={form.name} onChange={(e) => set("name", e.target.value)} required
-                className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition" placeholder="John Doe" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">No. Telepon</label>
-              <input value={form.phone} onChange={(e) => set("phone", e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition" placeholder="081234567890" />
-            </div>
+            <div className="space-y-2"><Label htmlFor="name">Nama Lengkap</Label><Input id="name" value={form.name} onChange={(e) => set("name", e.target.value)} required placeholder="John Doe" className="bg-slate-900 border-slate-700" /></div>
+            <div className="space-y-2"><Label htmlFor="phone">No. Telepon</Label><Input id="phone" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="081234567890" className="bg-slate-900 border-slate-700" /></div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
-            <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} required
-              className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition" placeholder="nama@email.com" />
+          <div className="space-y-2">
+            <Label htmlFor="reg-email">Email</Label>
+            <Input id="reg-email" type="email" value={form.email} onChange={(e) => set("email", e.target.value)} required placeholder="nama@email.com" className="bg-slate-900 border-slate-700" />
             {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email[0]}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+            <div className="space-y-2">
+              <Label htmlFor="reg-pw">Password</Label>
               <div className="relative">
-                <input type={showPw ? "text" : "password"} value={form.password} onChange={(e) => set("password", e.target.value)} required
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition pr-12" placeholder="Min. 8 karakter" />
-                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
-                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+                <Input id="reg-pw" type={showPw ? "text" : "password"} value={form.password} onChange={(e) => set("password", e.target.value)} required placeholder="Min. 8 karakter" className="bg-slate-900 border-slate-700 pr-10" />
+                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"><Eye size={16} /></button>
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Konfirmasi</label>
-              <input type="password" value={form.password_confirmation} onChange={(e) => set("password_confirmation", e.target.value)} required
-                className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition" placeholder="••••••••" />
-            </div>
+            <div className="space-y-2"><Label htmlFor="reg-confirm">Konfirmasi</Label><Input id="reg-confirm" type="password" value={form.password_confirmation} onChange={(e) => set("password_confirmation", e.target.value)} required placeholder="••••••••" className="bg-slate-900 border-slate-700" /></div>
           </div>
 
-          <button type="submit" disabled={loading || !form.role}
-            className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 flex items-center justify-center gap-2">
-            {loading ? <><Loader2 size={18} className="animate-spin" /> Memproses...</> : "Buat Akun"}
-          </button>
+          <Button type="submit" disabled={loading || !form.role} className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/20 h-12 text-base">
+            {loading ? <><Loader2 size={18} className="animate-spin mr-2" /> Memproses...</> : "Buat Akun"}
+          </Button>
         </form>
 
         <p className="text-center text-slate-400 text-sm mt-8">

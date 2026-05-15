@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Building2, Zap, Brain, TrendingUp, Leaf, ShoppingBag } from "lucide-react";
+import { Zap, BatteryCharging, Brain, ShoppingBag, ArrowUpRight, TrendingUp } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import api from "@/services/api";
-import { useAuth } from "@/hooks/useAuth";
 
 export default function UmkmOverview() {
-  const { user } = useAuth();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,62 +15,58 @@ export default function UmkmOverview() {
 
   if (loading) return <div className="flex items-center justify-center py-20"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-emerald-500" /></div>;
 
+  const cards = [
+    { label: "Kebutuhan Energi (kWh)", value: Number(data?.monthly_energy_need || 0).toLocaleString(), icon: <BatteryCharging size={20} />, color: "from-emerald-500 to-teal-500" },
+    { label: "Biaya Energi", value: `Rp ${Number(data?.current_energy_cost || 0).toLocaleString()}`, icon: <Zap size={20} />, color: "from-amber-500 to-orange-500" },
+    { label: "Rekomendasi AI", value: data?.recommendation_count ?? 0, icon: <Brain size={20} />, color: "from-purple-500 to-pink-500" },
+    { label: "Produk Aktif", value: data?.total_products ?? 0, icon: <ShoppingBag size={20} />, color: "from-cyan-500 to-blue-500" },
+  ];
+
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-white">Halo, {user?.name}! 👋</h1>
-        <p className="text-slate-400 mt-1">Dashboard UMKM Anda</p>
-      </div>
+      <div><h1 className="text-2xl font-bold text-white">Dashboard UMKM</h1><p className="text-slate-400 mt-1">Ringkasan profil dan kebutuhan energi usaha Anda</p></div>
 
-      {!data?.has_business ? (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="rounded-2xl bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 p-8 text-center">
-          <Building2 size={48} className="text-emerald-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-white mb-2">Buat Profil Usaha</h2>
-          <p className="text-slate-400 mb-6">Mulai dengan membuat profil usaha Anda untuk mendapatkan rekomendasi energi bersih.</p>
-          <a href="/umkm/business" className="inline-flex px-6 py-3 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-400 transition">
-            Buat Profil Sekarang
-          </a>
-        </motion.div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[
-              { label: "Status Verifikasi", value: data.verification_status, icon: <Building2 size={20} />, color: data.verification_status === "verified" ? "text-emerald-400" : "text-amber-400" },
-              { label: "Kebutuhan Energi", value: data.energy_needs_count, icon: <Zap size={20} />, color: "text-amber-400" },
-              { label: "Rekomendasi", value: data.recommendations_count, icon: <Brain size={20} />, color: "text-purple-400" },
-              { label: "Produk", value: data.products_count, icon: <ShoppingBag size={20} />, color: "text-rose-400" },
-            ].map((c, i) => (
-              <motion.div key={c.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-                className="rounded-2xl bg-slate-900/70 border border-slate-800/60 p-5">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={c.color}>{c.icon}</span>
-                  <span className="text-sm text-slate-400">{c.label}</span>
-                </div>
-                <p className="text-2xl font-bold text-white capitalize">{c.value}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          {data.latest_score && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-              className="rounded-2xl bg-slate-900/70 border border-slate-800/60 p-6">
-              <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-                <TrendingUp size={20} className="text-emerald-400" /> Skor Prioritas
-              </h2>
-              <div className="flex items-center gap-6">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                  <span className="text-2xl font-bold text-white">{data.latest_score.score}</span>
-                </div>
-                <div>
-                  <p className="text-lg font-medium text-white">{data.latest_score.category}</p>
-                  <p className="text-sm text-slate-400 mt-1">Skor dihitung berdasarkan kebutuhan energi, dampak ekonomi, dan jarak ke sumber energi.</p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </>
+      {data?.profile_status === "incomplete" && (
+        <Card className="bg-amber-500/10 border-amber-500/20">
+          <CardContent className="p-4 flex items-start gap-3">
+            <div className="p-2 rounded-full bg-amber-500/20 text-amber-400"><Zap size={20} /></div>
+            <div>
+              <h3 className="font-semibold text-amber-400">Profil Usaha Belum Lengkap</h3>
+              <p className="text-sm text-amber-400/80 mt-1">Silakan lengkapi profil usaha dan data kebutuhan energi Anda di menu Business Profile untuk mendapatkan rekomendasi dari AI.</p>
+            </div>
+          </CardContent>
+        </Card>
       )}
+
+      {data?.priority_score > 0 && (
+        <Card className="bg-emerald-500/10 border-emerald-500/20">
+          <CardContent className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-emerald-500/20 text-emerald-400"><ArrowUpRight size={20} /></div>
+              <div>
+                <h3 className="font-semibold text-emerald-400">Skor Prioritas: {data.priority_score}</h3>
+                <p className="text-sm text-emerald-400/80">Usaha Anda diprioritaskan untuk distribusi energi bersih.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {cards.map((c, i) => (
+          <motion.div key={c.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+            <Card className="bg-slate-900/70 border-slate-800/60 hover:border-slate-700/80 transition-all">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div><p className="text-sm text-slate-400 mb-1">{c.label}</p><p className="text-2xl font-bold text-white truncate max-w-[120px]">{c.value}</p></div>
+                  <div className={`p-3 rounded-xl bg-gradient-to-br ${c.color} text-white shadow-lg`}>{c.icon}</div>
+                </div>
+                <div className="flex items-center gap-1 mt-3 text-xs text-emerald-400"><TrendingUp size={12} /> <span>Active</span></div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }

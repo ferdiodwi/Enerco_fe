@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { Leaf, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -19,9 +23,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      const user = JSON.parse(localStorage.getItem("user") || "{}");
-      navigate("/admin");
-      window.location.reload();
+      navigate("/dashboard");
     } catch (err: any) {
       setError(err.response?.data?.message || "Login gagal. Periksa email dan password.");
     } finally {
@@ -50,10 +52,7 @@ export default function LoginPage() {
 
       {/* Right - Form */}
       <div className="flex-1 flex items-center justify-center px-6 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md">
           <div className="lg:hidden flex items-center gap-3 mb-8">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
               <Leaf size={22} className="text-white" />
@@ -65,39 +64,28 @@ export default function LoginPage() {
           <p className="text-slate-400 mb-8">Masuk ke akun Anda untuk melanjutkan</p>
 
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-              {error}
-            </div>
+            <Card className="mb-6 bg-red-500/10 border-red-500/20">
+              <CardContent className="py-3 text-red-400 text-sm">{error}</CardContent>
+            </Card>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
-              <input
-                type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
-                className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition"
-                placeholder="nama@email.com"
-              />
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="nama@email.com" className="bg-slate-900 border-slate-700" />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <input
-                  type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required
-                  className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition pr-12"
-                  placeholder="••••••••"
-                />
+                <Input id="password" type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="••••••••" className="bg-slate-900 border-slate-700 pr-12" />
                 <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
                   {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
             </div>
-            <button
-              type="submit" disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              {loading ? <><Loader2 size={18} className="animate-spin" /> Memproses...</> : "Masuk"}
-            </button>
+            <Button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/20 h-12 text-base">
+              {loading ? <><Loader2 size={18} className="animate-spin mr-2" /> Memproses...</> : "Masuk"}
+            </Button>
           </form>
 
           <p className="text-center text-slate-400 text-sm mt-8">
