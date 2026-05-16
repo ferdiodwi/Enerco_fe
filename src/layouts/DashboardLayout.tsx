@@ -3,7 +3,6 @@ import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import { LayoutDashboard, Users, Building2, Zap, BatteryCharging, Map, Brain, Truck, ShoppingBag, Handshake, FileText, Settings, LogOut, Menu, X, ChevronDown, Leaf } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const menuMap: Record<string, { label: string; icon: React.ReactNode; path: string }[]> = {
   admin: [{ label: "Overview", icon: <LayoutDashboard size={20} />, path: "" }, { label: "Users", icon: <Users size={20} />, path: "users" }, { label: "UMKM", icon: <Building2 size={20} />, path: "businesses" }, { label: "Energy Sources", icon: <Zap size={20} />, path: "energy-sources" }, { label: "Energy Needs", icon: <BatteryCharging size={20} />, path: "energy-needs" }, { label: "Recommendations", icon: <Brain size={20} />, path: "recommendations" }, { label: "Distributions", icon: <Truck size={20} />, path: "distributions" }, { label: "Products", icon: <ShoppingBag size={20} />, path: "products" }, { label: "Partnerships", icon: <Handshake size={20} />, path: "partnerships" }, { label: "Reports", icon: <FileText size={20} />, path: "reports" }],
@@ -44,7 +43,7 @@ export default function DashboardLayout() {
         {menus.map((item) => (
           <NavLink
             key={item.path} to={`${basePath}/${item.path}`} end={item.path === ""}
-            className={({ isActive }) => `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive ? "bg-emerald-500/15 text-emerald-400 shadow-sm shadow-emerald-500/10" : "text-slate-400 hover:text-white hover:bg-slate-700/50"}`}
+            className={({ isActive }) => `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive ? "bg-brand-500/15 text-brand-400 shadow-sm shadow-brand-500/10" : "text-slate-400 hover:text-white hover:bg-slate-700/50"}`}
             onClick={() => setMobileOpen(false)}
           >
             {item.icon}
@@ -55,7 +54,7 @@ export default function DashboardLayout() {
 
       <div className="px-3 py-4 border-t border-slate-700/50">
         <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">{user?.name?.charAt(0).toUpperCase()}</div>
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">{user?.name?.charAt(0).toUpperCase()}</div>
           {sidebarOpen && (
             <div className="overflow-hidden">
               <p className="text-sm font-medium text-white truncate">{user?.name}</p>
@@ -63,10 +62,10 @@ export default function DashboardLayout() {
             </div>
           )}
         </div>
-        <Button variant="ghost" onClick={handleLogout} className="w-full justify-start text-red-400 hover:bg-red-500/10 hover:text-red-300">
-          <LogOut size={20} className="mr-2" />
+        <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-error-400 hover:bg-error-500/10 hover:text-error-300 transition-colors">
+          <LogOut size={20} />
           {sidebarOpen && <span>Logout</span>}
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -91,11 +90,11 @@ export default function DashboardLayout() {
       <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? "lg:ml-64" : "lg:ml-20"}`}>
         <header className="sticky top-0 z-20 bg-slate-900/60 backdrop-blur-xl border-b border-slate-700/50 px-4 lg:px-8 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)} className="lg:hidden text-slate-400 hover:text-white"><Menu size={24} /></Button>
-            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)} className="hidden lg:flex text-slate-400 hover:text-white">{sidebarOpen ? <X size={20} /> : <Menu size={20} />}</Button>
+            <button onClick={() => setMobileOpen(true)} className="lg:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"><Menu size={24} /></button>
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="hidden lg:flex p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">{sidebarOpen ? <X size={20} /> : <Menu size={20} />}</button>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 font-medium capitalize">{role}</span>
+            <span className="text-xs px-3 py-1 rounded-full bg-brand-500/15 text-brand-400 font-medium capitalize">{role}</span>
           </div>
         </header>
 

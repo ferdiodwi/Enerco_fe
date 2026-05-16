@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { Toaster } from "sonner";
 
 // Layouts
-import DashboardLayout from "@/layouts/DashboardLayout";
+import AppLayout from "@/layout/AppLayout";
 
 // Public
 import LandingPage from "@/pages/public/LandingPage";
@@ -54,78 +55,90 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AuthProvider>
-          <Toaster position="top-right" theme="dark" richColors />
-          <Routes>
-            {/* Public */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/dashboard" element={<RoleRedirect />} />
+        <ThemeProvider>
+          <AuthProvider>
+            <Toaster
+              position="top-right"
+              theme="system"
+              richColors
+              toastOptions={{
+                classNames: {
+                  success: "!bg-success-50 !text-success-700 !border-success-200 dark:!bg-success-500/15 dark:!text-success-400 dark:!border-success-500/30",
+                  error: "!bg-error-50 !text-error-700 !border-error-200 dark:!bg-error-500/15 dark:!text-error-400 dark:!border-error-500/30",
+                },
+              }}
+            />
+            <Routes>
+              {/* Public */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/dashboard" element={<RoleRedirect />} />
 
-            {/* Admin */}
-            <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/admin" element={<AdminOverview />} />
-                <Route path="/admin/users" element={<UserManagement />} />
-                <Route path="/admin/businesses" element={<BusinessList />} />
-                <Route path="/admin/energy-sources" element={<EnergySourceList />} />
-                <Route path="/admin/energy-needs" element={<EnergyNeedsPage />} />
-                <Route path="/admin/recommendations" element={<RecommendationList />} />
-                <Route path="/admin/distributions" element={<DistributionList />} />
-                <Route path="/admin/products" element={<ComingSoon title="Products" />} />
-                <Route path="/admin/partnerships" element={<PartnershipList />} />
-                <Route path="/admin/reports" element={<ComingSoon title="Reports" />} />
+              {/* Admin */}
+              <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/admin" element={<AdminOverview />} />
+                  <Route path="/admin/users" element={<UserManagement />} />
+                  <Route path="/admin/businesses" element={<BusinessList />} />
+                  <Route path="/admin/energy-sources" element={<EnergySourceList />} />
+                  <Route path="/admin/energy-needs" element={<EnergyNeedsPage />} />
+                  <Route path="/admin/recommendations" element={<RecommendationList />} />
+                  <Route path="/admin/distributions" element={<DistributionList />} />
+                  <Route path="/admin/products" element={<ComingSoon title="Products" />} />
+                  <Route path="/admin/partnerships" element={<PartnershipList />} />
+                  <Route path="/admin/reports" element={<ComingSoon title="Reports" />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* UMKM */}
-            <Route element={<ProtectedRoute allowedRoles={["umkm"]} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/umkm" element={<UmkmOverview />} />
-                <Route path="/umkm/business" element={<BusinessProfile />} />
-                <Route path="/umkm/energy-needs" element={<EnergyNeedsPage />} />
-                <Route path="/umkm/recommendations" element={<ComingSoon title="Recommendations" />} />
-                <Route path="/umkm/products" element={<ComingSoon title="Products" />} />
-                <Route path="/umkm/partnerships" element={<PartnershipList />} />
+              {/* UMKM */}
+              <Route element={<ProtectedRoute allowedRoles={["umkm"]} />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/umkm" element={<UmkmOverview />} />
+                  <Route path="/umkm/business" element={<BusinessProfile />} />
+                  <Route path="/umkm/energy-needs" element={<EnergyNeedsPage />} />
+                  <Route path="/umkm/recommendations" element={<ComingSoon title="Recommendations" />} />
+                  <Route path="/umkm/products" element={<ComingSoon title="Products" />} />
+                  <Route path="/umkm/partnerships" element={<PartnershipList />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* Government */}
-            <Route element={<ProtectedRoute allowedRoles={["government"]} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/government" element={<GovernmentOverview />} />
-                <Route path="/government/map" element={<ComingSoon title="Priority Map" />} />
-                <Route path="/government/businesses" element={<BusinessList />} />
-                <Route path="/government/energy-sources" element={<EnergySourceList />} />
-                <Route path="/government/recommendations" element={<RecommendationList />} />
-                <Route path="/government/reports" element={<ComingSoon title="Impact Reports" />} />
+              {/* Government */}
+              <Route element={<ProtectedRoute allowedRoles={["government"]} />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/government" element={<GovernmentOverview />} />
+                  <Route path="/government/map" element={<ComingSoon title="Priority Map" />} />
+                  <Route path="/government/businesses" element={<BusinessList />} />
+                  <Route path="/government/energy-sources" element={<EnergySourceList />} />
+                  <Route path="/government/recommendations" element={<RecommendationList />} />
+                  <Route path="/government/reports" element={<ComingSoon title="Impact Reports" />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* Provider */}
-            <Route element={<ProtectedRoute allowedRoles={["provider"]} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/provider" element={<ProviderOverview />} />
-                <Route path="/provider/energy-sources" element={<EnergySourceList />} />
-                <Route path="/provider/distributions" element={<DistributionList />} />
+              {/* Provider */}
+              <Route element={<ProtectedRoute allowedRoles={["provider"]} />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/provider" element={<ProviderOverview />} />
+                  <Route path="/provider/energy-sources" element={<EnergySourceList />} />
+                  <Route path="/provider/distributions" element={<DistributionList />} />
+                </Route>
               </Route>
-            </Route>
 
-            {/* Partner */}
-            <Route element={<ProtectedRoute allowedRoles={["partner"]} />}>
-              <Route element={<DashboardLayout />}>
-                <Route path="/partner" element={<PartnerOverview />} />
-                <Route path="/partner/businesses" element={<BusinessList />} />
-                <Route path="/partner/marketplace" element={<ComingSoon title="Marketplace" />} />
-                <Route path="/partner/partnerships" element={<PartnershipList />} />
+              {/* Partner */}
+              <Route element={<ProtectedRoute allowedRoles={["partner"]} />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/partner" element={<PartnerOverview />} />
+                  <Route path="/partner/businesses" element={<BusinessList />} />
+                  <Route path="/partner/marketplace" element={<ComingSoon title="Marketplace" />} />
+                  <Route path="/partner/partnerships" element={<PartnershipList />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </AuthProvider>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </AuthProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>
   );

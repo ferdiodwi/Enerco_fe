@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Leaf, Zap, Map, Brain, ShoppingBag, BarChart3, ArrowRight, Users, Building2, Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const stats = [
   { label: "UMKM Terbantu", value: "150+", icon: <Building2 size={20} /> },
@@ -37,12 +36,8 @@ export default function LandingPage() {
             <Link to="/marketplace" className="hover:text-white transition">Marketplace</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" asChild className="text-slate-300 hover:text-white">
-              <Link to="/login">Masuk</Link>
-            </Button>
-            <Button asChild className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white shadow-lg shadow-emerald-500/20">
-              <Link to="/register">Daftar Gratis</Link>
-            </Button>
+            <Link to="/login" className="text-slate-300 hover:text-white transition-colors px-4 py-2 text-sm font-medium">Masuk</Link>
+            <Link to="/register" className="inline-flex items-center rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white shadow-lg shadow-emerald-500/20 px-4 py-2 text-sm font-medium transition-all">Daftar Gratis</Link>
           </div>
         </div>
       </nav>
@@ -66,12 +61,12 @@ export default function LandingPage() {
             Platform AI yang menghubungkan UMKM, penyedia energi, dan pemerintah untuk distribusi energi bersih yang tepat sasaran dan berdampak.
           </motion.p>
           <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.6, delay: 0.3 }} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="group bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold shadow-xl shadow-emerald-500/25 h-14 px-8 text-lg rounded-2xl">
-              <Link to="/register">Mulai Sekarang <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" /></Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="text-slate-400 hover:text-white border-slate-700 hover:border-slate-500 h-14 px-8 text-lg rounded-2xl bg-transparent hover:bg-slate-800/50">
-              <a href="#features">Pelajari Lebih Lanjut</a>
-            </Button>
+            <Link to="/register" className="group inline-flex items-center bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold shadow-xl shadow-emerald-500/25 h-14 px-8 text-lg rounded-2xl transition-all">
+              Mulai Sekarang <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <a href="#features" className="inline-flex items-center text-slate-400 hover:text-white border border-slate-700 hover:border-slate-500 h-14 px-8 text-lg rounded-2xl bg-transparent hover:bg-slate-800/50 transition-all">
+              Pelajari Lebih Lanjut
+            </a>
           </motion.div>
         </div>
       </section>
@@ -111,9 +106,9 @@ export default function LandingPage() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
             <h2 className="text-4xl font-bold mb-6">Bergabung dalam Transformasi <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">Energi Bersih</span></h2>
             <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Dukung SDG 7, SDG 9, dan SDG 17. Jadilah bagian dari ekosistem energi bersih yang adil dan berdampak.</p>
-            <Button asChild size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold shadow-xl shadow-emerald-500/25 h-14 px-8 text-lg rounded-2xl">
-              <Link to="/register">Daftar Sekarang <ArrowRight size={20} className="ml-2" /></Link>
-            </Button>
+            <Link to="/register" className="inline-flex items-center bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-semibold shadow-xl shadow-emerald-500/25 h-14 px-8 text-lg rounded-2xl transition-all">
+              Daftar Sekarang <ArrowRight size={20} className="ml-2" />
+            </Link>
           </motion.div>
         </div>
       </section>
