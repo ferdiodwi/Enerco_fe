@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Building2, BatteryCharging, Zap, Plus, Loader2 } from "lucide-react";
-import Badge from "@/components/ui/badge/Badge";
-import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
@@ -58,23 +56,26 @@ export default function BusinessProfile() {
     } finally { setSaving(false); }
   };
 
+  const statusBadge: Record<string, string> = { verified: "bg-green-100 text-green-700", pending: "bg-amber-100 text-amber-700", rejected: "bg-red-100 text-red-700" };
+
   if (loading) return <div className="flex items-center justify-center py-20"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-brand-500" /></div>;
 
   if (!business) {
     return (
       <div className="space-y-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Business Profile</h1>
-        <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center dark:border-gray-800 dark:bg-white/[0.03]">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center dark:bg-white/[0.03] dark:border-gray-800">
           <Building2 size={48} className="text-brand-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-800 mb-2 dark:text-white">Belum ada profil usaha</h2>
           <p className="text-gray-500 mb-6 dark:text-gray-400">Buat profil usaha Anda untuk mendapatkan rekomendasi energi bersih</p>
-          <button onClick={() => setOpen(true)} className="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600 transition-colors">
-            <Plus size={18} />Buat Profil
+          <button onClick={() => setOpen(true)} className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white transition">
+            <Plus size={16} />Buat Profil
           </button>
           
           <Modal isOpen={open} onClose={() => setOpen(false)} className="max-w-2xl p-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-white">Buat Profil UMKM</h3>
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center"><Building2 size={20} className="text-emerald-600" /></div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Buat Profil UMKM</h3>
             </div>
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -99,9 +100,10 @@ export default function BusinessProfile() {
                 <Checkbox checked={form.clean_energy_access} onChange={(e) => set("clean_energy_access", e.target.checked)} />
                 <Label className="mb-0">Sudah punya akses energi bersih</Label>
               </div>
-              <div className="pt-4">
-                <button type="submit" disabled={saving} className="flex w-full justify-center rounded-lg bg-brand-500 p-3 font-medium text-white hover:bg-brand-600 disabled:opacity-50">
-                  {saving ? <><Loader2 size={20} className="mr-2 animate-spin" />Menyimpan...</> : "Simpan Profil"}
+              <div className="flex justify-end gap-3 pt-2">
+                <button type="button" onClick={() => setOpen(false)} className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg text-sm transition dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">Batal</button>
+                <button type="submit" disabled={saving} className="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-lg text-sm transition disabled:opacity-50">
+                  {saving ? "Menyimpan..." : "Simpan Profil"}
                 </button>
               </div>
             </form>
@@ -115,37 +117,52 @@ export default function BusinessProfile() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Business Profile</h1>
-        <Badge variant="light" color={business.verification_status === "verified" ? "success" : "warning"}>
-          <span className="capitalize">{business.verification_status}</span>
-        </Badge>
+        <span className={`px-3 py-1 text-xs font-semibold rounded-full capitalize ${statusBadge[business.verification_status] || "bg-gray-100 text-gray-500"}`}>{business.verification_status}</span>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        {/* Main Info */}
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-white/[0.03] dark:border-gray-800">
           <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-6 dark:text-white">
-            <Building2 size={24} className="text-brand-500" />{business.name}
+            <Building2 size={24} className="text-emerald-500" />{business.name}
           </h2>
           <div className="space-y-6">
-            <div className="grid grid-cols-2 gap-6 text-sm">
-              <div><span className="text-gray-500 dark:text-gray-400">Sektor</span><p className="text-gray-800 font-medium mt-1 dark:text-white">{business.sector}</p></div>
-              <div><span className="text-gray-500 dark:text-gray-400">Karyawan</span><p className="text-gray-800 font-medium mt-1 dark:text-white">{business.employee_count} orang</p></div>
-              <div><span className="text-gray-500 dark:text-gray-400">Alamat</span><p className="text-gray-800 font-medium mt-1 dark:text-white">{business.address}</p></div>
-              <div><span className="text-gray-500 dark:text-gray-400">Koordinat</span><p className="text-gray-800 font-medium mt-1 dark:text-white">{business.latitude}, {business.longitude}</p></div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 dark:bg-gray-800/40 dark:border-gray-700/30">
+                <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Sektor</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{business.sector}</div>
+              </div>
+              <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 dark:bg-gray-800/40 dark:border-gray-700/30">
+                <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Karyawan</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{business.employee_count} orang</div>
+              </div>
+              <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 dark:bg-gray-800/40 dark:border-gray-700/30">
+                <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Alamat</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{business.address}</div>
+              </div>
+              <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 dark:bg-gray-800/40 dark:border-gray-700/30">
+                <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Koordinat</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-white">{business.latitude}, {business.longitude}</div>
+              </div>
             </div>
-            <div><span className="text-sm text-gray-500 dark:text-gray-400">Deskripsi</span><p className="text-gray-800 mt-1 dark:text-white">{business.description}</p></div>
+            <div className="p-3 rounded-lg bg-gray-50 border border-gray-100 dark:bg-gray-800/40 dark:border-gray-700/30">
+              <div className="text-[11px] text-gray-400 font-semibold uppercase tracking-wider mb-1">Deskripsi</div>
+              <div className="text-sm font-medium text-gray-900 leading-relaxed dark:text-white">{business.description}</div>
+            </div>
           </div>
         </div>
 
+        {/* Sidebar Stats */}
         <div className="space-y-4">
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-            <div className="flex items-center gap-2 mb-3"><BatteryCharging size={20} className="text-warning-500" /><span className="text-sm font-medium text-gray-500 dark:text-gray-400">Kebutuhan Energi</span></div>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-white/[0.03] dark:border-gray-800">
+            <div className="flex items-center gap-2 mb-3"><BatteryCharging size={20} className="text-amber-500" /><span className="text-sm font-medium text-gray-500 dark:text-gray-400">Kebutuhan Energi</span></div>
             <p className="text-2xl font-bold text-gray-800 dark:text-white">{Number(business.monthly_energy_need).toLocaleString()} kWh</p>
-            <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">per bulan</p>
+            <p className="text-xs text-gray-400 mt-1">per bulan</p>
           </div>
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-            <div className="flex items-center gap-2 mb-3"><Zap size={20} className="text-success-500" /><span className="text-sm font-medium text-gray-500 dark:text-gray-400">Biaya Energi</span></div>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-white/[0.03] dark:border-gray-800">
+            <div className="flex items-center gap-2 mb-3"><Zap size={20} className="text-emerald-500" /><span className="text-sm font-medium text-gray-500 dark:text-gray-400">Biaya Energi</span></div>
             <p className="text-2xl font-bold text-gray-800 dark:text-white">Rp {Number(business.current_energy_cost).toLocaleString()}</p>
-            <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">per bulan</p>
+            <p className="text-xs text-gray-400 mt-1">per bulan</p>
           </div>
         </div>
       </div>

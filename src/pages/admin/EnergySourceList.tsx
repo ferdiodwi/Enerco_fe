@@ -1,75 +1,106 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Zap, MapPin } from "lucide-react";
-import Badge from "@/components/ui/badge/Badge";
-import Select from "@/components/form/Select";
+import { Zap, Search, MapPin } from "lucide-react";
+import Pagination from "@/components/ui/Pagination";
 import api from "@/services/api";
+
+interface PaginationMeta { current_page: number; last_page: number; from: number; to: number; total: number; }
 
 export default function EnergySourceList() {
   const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [typeFilter, setTypeFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [perPage, setPerPage] = useState(20);
+  const [page, setPage] = useState(1);
+  const [meta, setMeta] = useState<PaginationMeta>({ current_page: 1, last_page: 1, from: 0, to: 0, total: 0 });
 
+  useEffect(() => { setPage(1); }, [typeFilter, perPage]);
   useEffect(() => {
-    const params: any = { per_page: 50 };
-    if (typeFilter && typeFilter !== "all") params.type = typeFilter;
-    api.get("/energy-sources", { params }).then((r) => setSources(r.data.data.data)).catch(console.error).finally(() => setLoading(false));
-  }, [typeFilter]);
+    setLoading(true);
+    const params: any = { per_page: perPage, page };
+    if (typeFilter) params.type = typeFilter;
+    api.get("/energy-sources", { params }).then((r) => { const d = r.data.data; setSources(d.data); setMeta({ current_page: d.current_page, last_page: d.last_page, from: d.from || 0, to: d.to || 0, total: d.total }); }).catch(console.error).finally(() => setLoading(false));
+  }, [typeFilter, perPage, page]);
 
-  const typeOptions = [
-    { value: "all", label: "Semua Jenis" },
-    { value: "solar", label: "Solar" },
-    { value: "wind", label: "Wind" },
-    { value: "hydro", label: "Hydro" },
-    { value: "biomass", label: "Biomass" },
-    { value: "geothermal", label: "Geothermal" },
-  ];
-
-  const typeColor: Record<string, string> = { solar: "from-amber-500 to-yellow-500", wind: "from-cyan-500 to-blue-500", hydro: "from-blue-500 to-indigo-500", biomass: "from-green-500 to-emerald-500", geothermal: "from-red-500 to-orange-500", other: "from-gray-500 to-gray-400" };
-  const typeLabel: Record<string, string> = { solar: "☀️ Solar", wind: "💨 Wind", hydro: "💧 Hydro", biomass: "🌿 Biomass", geothermal: "🌋 Geothermal", other: "⚡ Other" };
-
-  const getStatusColor = (s: string) => s === "active" ? "success" : s === "maintenance" ? "warning" : "error";
+  const typeLabel: Record<string, string> = { solar: "☀️ Solar", wind: "💨 Wind", hydro: "💧 Hydro", biomass: "🌿 Biomass", geothermal: "🌋 Geothermal" };
+  const statusBadge: Record<string, string> = { active: "bg-green-100 text-green-700", maintenance: "bg-amber-100 text-amber-700", inactive: "bg-red-100 text-red-700" };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div><h1 className="text-2xl font-bold text-gray-900 dark:text-white">Energy Sources</h1><p className="text-gray-500 mt-1 dark:text-gray-400">Data sumber energi bersih tersedia</p></div>
 
-      <div className="flex gap-3">
-        <div className="w-[180px]">
-          <Select options={typeOptions} defaultValue={typeFilter} onChange={setTypeFilter} />
+      {/* Filter */}
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-4 items-center justify-between dark:bg-white/[0.03] dark:border-gray-800">
+        <div className="flex items-center gap-2 text-sm text-gray-600 whitespace-nowrap dark:text-gray-400">
+          <span>Tampilkan</span>
+          <select value={perPage} onChange={(e) => setPerPage(Number(e.target.value))} className="px-3 py-1.5 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-brand-500 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
+            <option value={10}>10</option><option value={20}>20</option><option value={50}>50</option>
+          </select>
+          <span>baris</span>
+        </div>
+        <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+          <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="w-full md:w-auto px-4 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-brand-500 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
+            <option value="">Semua Jenis</option><option value="solar">Solar</option><option value="wind">Wind</option><option value="hydro">Hydro</option><option value="biomass">Biomass</option><option value="geothermal">Geothermal</option>
+          </select>
         </div>
       </div>
 
-      {loading ? (
-        <div className="flex items-center justify-center py-20"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-brand-500" /></div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {sources.map((s, i) => (
-            <motion.div key={s.id} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
-              <div className="rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:border-gray-300 dark:border-gray-800 dark:bg-white/[0.03] dark:hover:border-gray-700">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${typeColor[s.type] || typeColor.other} flex items-center justify-center text-white`}><Zap size={20} /></div>
-                  <div><h3 className="font-semibold text-gray-800 dark:text-white">{s.name}</h3><p className="text-xs text-gray-500 dark:text-gray-400">{typeLabel[s.type] || s.type}</p></div>
-                </div>
-                <div className="space-y-2 mb-4">
-                  <div className="flex justify-between text-sm"><span className="text-gray-500 dark:text-gray-400">Total Kapasitas</span><span className="text-gray-800 font-medium dark:text-white">{Number(s.total_capacity_kwh).toLocaleString()} kWh</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-gray-500 dark:text-gray-400">Tersedia</span><span className="text-success-500 font-medium">{Number(s.available_capacity_kwh).toLocaleString()} kWh</span></div>
-                  <div className="w-full bg-gray-100 rounded-full h-2 mt-1 dark:bg-gray-800">
-                    <div className="bg-gradient-to-r from-success-500 to-teal-500 h-2 rounded-full transition-all" style={{ width: `${(s.available_capacity_kwh / s.total_capacity_kwh) * 100}%` }} />
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400"><MapPin size={12} />{s.address}</div>
-                <div className="mt-4">
-                  <Badge variant="light" color={getStatusColor(s.status)}>
-                    <span className="capitalize">{s.status}</span>
-                  </Badge>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-          {!sources.length && <div className="col-span-full p-12 text-center rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"><p className="text-gray-500 dark:text-gray-400">Tidak ada sumber energi</p></div>}
-        </div>
-      )}
+      {/* Table */}
+      <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-white/[0.03] dark:border-gray-800">
+        {loading ? (
+          <div className="flex items-center justify-center py-20"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-brand-500" /></div>
+        ) : (
+          <table className="w-full min-w-[800px]">
+            <thead className="bg-gray-200 dark:bg-gray-800">
+              <tr>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">No</th>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">Sumber Energi</th>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">Tipe</th>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">Kapasitas Total</th>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">Tersedia</th>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">Lokasi</th>
+                <th className="px-6 py-3 text-xs font-bold tracking-wider text-left text-gray-700 uppercase dark:text-gray-300">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+              {sources.map((s, i) => (
+                <tr key={s.id} className="hover:bg-gray-50 transition-colors dark:hover:bg-white/[0.03]">
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{i + 1}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 bg-gradient-to-br from-amber-500 to-yellow-500"><Zap size={16} /></div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">{s.name}</div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700 capitalize">{typeLabel[s.type] || s.type}</span>
+                  </td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">{Number(s.total_capacity_kwh).toLocaleString()} kWh</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-emerald-600">{Number(s.available_capacity_kwh).toLocaleString()} kWh</span>
+                      <div className="w-16 bg-gray-100 rounded-full h-1.5 dark:bg-gray-700">
+                        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${(s.available_capacity_kwh / s.total_capacity_kwh) * 100}%` }} />
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400"><div className="flex items-center gap-1"><MapPin size={12} />{s.address}</div></td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${statusBadge[s.status] || "bg-gray-100 text-gray-500"}`}>{s.status}</span>
+                  </td>
+                </tr>
+              ))}
+              {!sources.length && (
+                <tr><td colSpan={7} className="px-6 py-16 text-center">
+                  <Zap size={40} className="mx-auto mb-3 text-gray-300 dark:text-gray-600" />
+                  <div className="text-gray-500 font-medium dark:text-gray-400">Tidak ada sumber energi</div>
+                </td></tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <Pagination from={meta.from} to={meta.to} total={meta.total} currentPage={meta.current_page} lastPage={meta.last_page} onPageChange={setPage} />
     </div>
   );
 }
