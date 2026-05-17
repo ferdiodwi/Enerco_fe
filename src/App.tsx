@@ -19,6 +19,7 @@ import RegisterPage from "@/pages/auth/RegisterPage";
 import AdminOverview from "@/pages/admin/AdminOverview";
 import UmkmOverview from "@/pages/umkm/UmkmOverview";
 import GovernmentOverview from "@/pages/government/GovernmentOverview";
+import PriorityMap from "@/pages/government/PriorityMap";
 import ProviderOverview from "@/pages/provider/ProviderOverview";
 import PartnerOverview from "@/pages/partner/PartnerOverview";
 
@@ -35,6 +36,11 @@ import BusinessProfile from "@/pages/umkm/BusinessProfile";
 import EnergyNeedsPage from "@/pages/shared/EnergyNeedsPage";
 import DistributionList from "@/pages/shared/DistributionList";
 import PartnershipList from "@/pages/shared/PartnershipList";
+import ProductManagement from "@/pages/shared/ProductManagement";
+import ImpactReports from "@/pages/shared/ImpactReports";
+
+// Partner Pages
+import Marketplace from "@/pages/partner/Marketplace";
 
 // Shared
 import ComingSoon from "@/pages/ComingSoon";
@@ -86,9 +92,9 @@ export default function App() {
                   <Route path="/admin/energy-needs" element={<EnergyNeedsPage />} />
                   <Route path="/admin/recommendations" element={<RecommendationList />} />
                   <Route path="/admin/distributions" element={<DistributionList />} />
-                  <Route path="/admin/products" element={<ComingSoon title="Products" />} />
+                  <Route path="/admin/products" element={<ProductManagement />} />
                   <Route path="/admin/partnerships" element={<PartnershipList />} />
-                  <Route path="/admin/reports" element={<ComingSoon title="Reports" />} />
+                  <Route path="/admin/reports" element={<ImpactReports />} />
                 </Route>
               </Route>
 
@@ -99,7 +105,7 @@ export default function App() {
                   <Route path="/umkm/business" element={<BusinessProfile />} />
                   <Route path="/umkm/energy-needs" element={<EnergyNeedsPage />} />
                   <Route path="/umkm/recommendations" element={<ComingSoon title="Recommendations" />} />
-                  <Route path="/umkm/products" element={<ComingSoon title="Products" />} />
+                  <Route path="/umkm/products" element={<ProductManagement />} />
                   <Route path="/umkm/partnerships" element={<PartnershipList />} />
                 </Route>
               </Route>
@@ -108,11 +114,11 @@ export default function App() {
               <Route element={<ProtectedRoute allowedRoles={["government"]} />}>
                 <Route element={<AppLayout />}>
                   <Route path="/government" element={<GovernmentOverview />} />
-                  <Route path="/government/map" element={<ComingSoon title="Priority Map" />} />
+                  <Route path="/government/map" element={<PriorityMap />} />
                   <Route path="/government/businesses" element={<BusinessList />} />
                   <Route path="/government/energy-sources" element={<EnergySourceList />} />
                   <Route path="/government/recommendations" element={<RecommendationList />} />
-                  <Route path="/government/reports" element={<ComingSoon title="Impact Reports" />} />
+                  <Route path="/government/reports" element={<ImpactReports />} />
                 </Route>
               </Route>
 
@@ -120,8 +126,11 @@ export default function App() {
               <Route element={<ProtectedRoute allowedRoles={["provider"]} />}>
                 <Route element={<AppLayout />}>
                   <Route path="/provider" element={<ProviderOverview />} />
+                  <Route path="/provider/businesses" element={<BusinessList />} />
                   <Route path="/provider/energy-sources" element={<EnergySourceList />} />
+                  <Route path="/provider/recommendations" element={<RecommendationList />} />
                   <Route path="/provider/distributions" element={<DistributionList />} />
+                  <Route path="/provider/partnerships" element={<PartnershipList />} />
                 </Route>
               </Route>
 
@@ -130,7 +139,9 @@ export default function App() {
                 <Route element={<AppLayout />}>
                   <Route path="/partner" element={<PartnerOverview />} />
                   <Route path="/partner/businesses" element={<BusinessList />} />
-                  <Route path="/partner/marketplace" element={<ComingSoon title="Marketplace" />} />
+                  <Route path="/partner/energy-sources" element={<EnergySourceList />} />
+                  <Route path="/partner/recommendations" element={<ComingSoon title="Recommendations" />} />
+                  <Route path="/partner/marketplace" element={<Marketplace />} />
                   <Route path="/partner/partnerships" element={<PartnershipList />} />
                 </Route>
               </Route>
