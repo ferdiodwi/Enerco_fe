@@ -42,11 +42,15 @@ npm install
 *(Catatan: Jika mengalami kendala versi dependensi yang saling terkait, Anda bisa menggunakan `npm install --legacy-peer-deps`)*.
 
 **Konfigurasi Environment:**
-Secara *default*, aplikasi React ini dikonfigurasi untuk berkomunikasi dengan API backend di `http://127.0.0.1:8000/api`.
-Jika Anda ingin mengubahnya (misalnya saat *deployment*), Anda dapat membuat file `.env` di dalam folder ini dan menambahkan baris:
-```env
-VITE_API_URL=http://url-backend-anda.com/api
+Salin file `.env.example` menjadi `.env`:
+```bash
+cp .env.example .env
 ```
+Secara *default*, file tersebut sudah berisi konfigurasi untuk berkomunikasi dengan API backend lokal:
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+```
+Jika Anda *deploy* ke server, cukup ubah nilai URL tersebut di file `.env`.
 
 ### 3. Menjalankan Server Development
 
