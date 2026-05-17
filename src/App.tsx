@@ -86,6 +86,7 @@ export default function App() {
               <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
                 <Route element={<AppLayout />}>
                   <Route path="/admin" element={<AdminOverview />} />
+                  <Route path="/admin/map" element={<PriorityMap />} />
                   <Route path="/admin/users" element={<UserManagement />} />
                   <Route path="/admin/businesses" element={<BusinessList />} />
                   <Route path="/admin/energy-sources" element={<EnergySourceList />} />

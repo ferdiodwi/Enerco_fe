@@ -33,7 +33,7 @@ type MenuSection = {
 
 const menuMap: Record<string, MenuSection[]> = {
   admin: [
-    { title: "Utama", items: [{ name: "Overview", icon: <LayoutDashboard size={20} />, path: "/admin" }] },
+    { title: "Utama", items: [{ name: "Overview", icon: <LayoutDashboard size={20} />, path: "/admin" }, { name: "Priority Map", icon: <Map size={20} />, path: "/admin/map" }] },
     { title: "Manajemen Utama", items: [{ name: "UMKM", icon: <Building2 size={20} />, path: "/admin/businesses" }, { name: "Energy Sources", icon: <Zap size={20} />, path: "/admin/energy-sources" }, { name: "Energy Needs", icon: <BatteryCharging size={20} />, path: "/admin/energy-needs" }] },
     { title: "Distribusi & AI", items: [{ name: "Recommendations", icon: <Brain size={20} />, path: "/admin/recommendations" }, { name: "Distributions", icon: <Truck size={20} />, path: "/admin/distributions" }] },
     { title: "Kemitraan & Pasar", items: [{ name: "Products", icon: <ShoppingBag size={20} />, path: "/admin/products" }, { name: "Partnerships", icon: <Handshake size={20} />, path: "/admin/partnerships" }] },

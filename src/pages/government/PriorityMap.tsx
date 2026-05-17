@@ -92,7 +92,7 @@ export default function PriorityMap() {
           {filteredMarkers.map((marker) => (
             <Marker 
               key={`${marker.type}-${marker.id}`}
-              position={[marker.latitude, marker.longitude]}
+              position={[Number(marker.latitude), Number(marker.longitude)]}
               icon={marker.type === "business" ? umkmIcon : energyIcon}
             >
               <Popup className="rounded-xl overflow-hidden">

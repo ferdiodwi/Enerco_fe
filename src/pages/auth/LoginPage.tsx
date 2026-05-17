@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
@@ -7,13 +7,19 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, token, userRole, isLoading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && token && userRole) {
+      navigate(`/${userRole}`, { replace: true });
+    }
+  }, [token, userRole, isLoading, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
