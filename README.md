@@ -1,73 +1,68 @@
-# React + TypeScript + Vite
+# EnergEco GlobalChain - Frontend (Web App)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend repository untuk **EnergEco GlobalChain**, platform distribusi energi bersih yang cerdas dan terintegrasi untuk mendukung UMKM dan kolaborasi lokal. Dibangun dengan fokus pada antarmuka premium, interaktif, dan *mobile-responsive*.
 
-Currently, two official plugins are available:
+## 🚀 Teknologi yang Digunakan
+* **Framework:** React 18
+* **Build Tool:** Vite
+* **Bahasa:** TypeScript
+* **Styling:** Tailwind CSS (dengan palet warna *Emerald* bergaya DevoraV2)
+* **Routing:** React Router v6
+* **State & Data Fetching:** React Query & Axios
+* **Pemetaan (Maps):** React-Leaflet
+* **Visualisasi Data:** Recharts
+* **Iconography:** Lucide React
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📦 Fitur Utama UI/UX
+1. **Dynamic Role-Based Dashboard:** Tampilan UI dan menu *Sidebar* yang secara dinamis berubah sesuai peran pengguna (Admin, UMKM, Government, Provider, Partner).
+2. **Priority Map:** Peta interaktif Leaflet yang menampilkan lokasi geospasial UMKM dan Sumber Energi secara visual.
+3. **Marketplace & Katalog:** Tampilan grid katalog produk ramah lingkungan dari UMKM untuk ditawarkan ke *Partner*.
+4. **Data Analytics:** Dasbor visual (grafik reduksi emisi, dsb) untuk memantau dampak keberlanjutan.
+5. **Autentikasi Cerdas:** *Redirect* otomatis berdasarkan token (Sanctum) ke masing-masing dasbor sesuai profil akses.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Cara Instalasi & Menjalankan Sistem
 
-## Expanding the ESLint configuration
+### 1. Persyaratan Sistem
+Pastikan Anda sudah menginstal aplikasi berikut di komputer Anda:
+* Node.js (versi 18.x atau lebih baru disarankan)
+* npm (Node Package Manager)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 2. Langkah-langkah Instalasi
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Clone atau Ekstrak Project:**
+Masuk ke direktori `Enerco_fe` (repository ini).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Install Dependencies:**
+Jalankan perintah berikut untuk mengunduh semua paket *library* yang dibutuhkan oleh aplikasi:
+```bash
+npm install
+```
+*(Catatan: Jika mengalami kendala versi dependensi yang saling terkait, Anda bisa menggunakan `npm install --legacy-peer-deps`)*.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Konfigurasi Environment:**
+Secara *default*, aplikasi React ini dikonfigurasi untuk berkomunikasi dengan API backend di `http://127.0.0.1:8000/api`.
+Jika Anda ingin mengubahnya (misalnya saat *deployment*), Anda dapat membuat file `.env` di dalam folder ini dan menambahkan baris:
+```env
+VITE_API_URL=http://url-backend-anda.com/api
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Menjalankan Server Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Setelah instalasi selesai, jalankan perintah berikut untuk memulai server lokal:
+```bash
+npm run dev
 ```
+
+Aplikasi frontend Anda sekarang berjalan di: **`http://localhost:5173`**
+
+### 4. Build untuk Production
+Jika aplikasi sudah siap untuk di-*deploy* ke server *hosting* (seperti Vercel, Netlify, atau Nginx), jalankan perintah:
+```bash
+npm run build
+```
+Perintah ini akan membuat folder `dist/` yang berisi file HTML, CSS, dan JS statis yang sudah di-*minify* dan siap di-hosting.
+
+---
+*Desain UI dioptimalkan untuk presentasi kompetisi.*
