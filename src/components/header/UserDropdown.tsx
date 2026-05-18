@@ -21,7 +21,7 @@ export default function UserDropdown() {
   const handleLogout = async () => {
     closeDropdown();
     await logout();
-    navigate("/login");
+    navigate("/");
   };
 
   const initials = user?.name?.charAt(0).toUpperCase() || "U";
