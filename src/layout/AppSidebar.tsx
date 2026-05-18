@@ -89,19 +89,19 @@ const AppSidebar: React.FC = () => {
             {nav.path && (
               <Link
                 to={nav.path}
-                className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium transition-colors duration-200
+                className={`group relative flex items-center gap-3 py-2.5 font-medium transition-all duration-200
                   ${active 
-                    ? "bg-emerald-50 text-emerald-700 dark:bg-white/10 dark:text-white" 
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
+                    ? "bg-brand-500/10 text-brand-400 border-l-[3px] border-brand-500 glow-border rounded-r-xl" 
+                    : "text-gray-500 hover:bg-white/5 hover:text-gray-200 border-l-[3px] border-transparent rounded-r-xl"
                   }
-                  ${!isExpanded && !isHovered ? "lg:justify-center" : "lg:justify-start"}
+                  ${!isExpanded && !isHovered ? "lg:justify-center px-0" : "lg:justify-start px-6"}
                 `}
               >
                 <span
                   className={`w-5 h-5 flex items-center justify-center transition-colors
                     ${active 
-                      ? "text-emerald-600 dark:text-white" 
-                      : "text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-300"
+                      ? "text-brand-400" 
+                      : "text-gray-500 group-hover:text-gray-300"
                     }
                   `}
                 >
@@ -120,7 +120,7 @@ const AppSidebar: React.FC = () => {
 
   return (
     <aside
-      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 px-5 left-0 bg-white dark:bg-gray-900 dark:border-gray-800 text-gray-900 h-screen transition-all duration-300 ease-in-out z-50 border-r border-gray-200 
+      className={`fixed mt-16 flex flex-col lg:mt-0 top-0 left-0 bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-r border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 h-screen transition-all duration-300 ease-in-out z-50 
         ${
           isExpanded || isMobileOpen
             ? "w-[290px]"
@@ -135,11 +135,11 @@ const AppSidebar: React.FC = () => {
     >
       <div
         className={`py-8 flex ${
-          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start"
+          !isExpanded && !isHovered ? "lg:justify-center" : "justify-start px-6"
         }`}
       >
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center"><Leaf size={22} className="text-white" /></div>
+          <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-brand-500/30 flex items-center justify-center glow-border"><Leaf size={22} className="text-brand-500 dark:text-brand-400" /></div>
           {(isExpanded || isHovered || isMobileOpen) && (
             <div>
               <span className="text-lg font-bold tracking-tight text-emerald-500">EnergEco</span>
@@ -157,7 +157,7 @@ const AppSidebar: React.FC = () => {
                   className={`mb-4 text-xs font-semibold uppercase flex leading-[20px] text-gray-400 dark:text-gray-500 ${
                     !isExpanded && !isHovered
                       ? "lg:justify-center"
-                      : "justify-start"
+                      : "justify-start px-6"
                   }`}
                 >
                   {isExpanded || isHovered || isMobileOpen ? (
